@@ -1,0 +1,51 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Infraestrutura Basica: Bucket S3 e Servidor EC2",
+  "Parameters": {
+    "InstanceType": {
+      "Description": "Escolha o tamanho do seu servidor",
+      "Type": "String",
+      "Default": "t3.micro",
+      "AllowedValues": ["t3.micro", "t2.micro"]
+    }
+  },
+  "Resources": {
+    "MeuBucketS3": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": {
+          "Fn::Sub": "meu-bucket-desafio-${AWS::AccountId}"
+        }
+      }
+    },
+    "MinhaInstanciaEC2": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "InstanceType": {
+          "Ref": "InstanceType"
+        },
+        "ImageId": "ami-0453ec754f44f9a4a",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Servidor-Desafio"
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "NomeDoBucket": {
+      "Description": "O nome do bucket criado com sucesso",
+      "Value": {
+        "Ref": "MeuBucketS3"
+      }
+    },
+    "IDDaInstancia": {
+      "Description": "O ID da máquina virtual criada",
+      "Value": {
+        "Ref": "MinhaInstanciaEC2"
+      }
+    }
+  }
+}
